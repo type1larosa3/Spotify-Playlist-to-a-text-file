@@ -10,6 +10,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 public class App 
 {
@@ -30,6 +34,20 @@ public class App
         int songCount = Integer.parseInt(getPlaylistSongCount(jFrame));
         String[] playlist = spotifyLogic.getPlaylist(playlistID, songCount);
 
+        String filePath = getTextFileSaveFilePath(jFrame) + "\\playlist.txt";
+
+        File file = new File(filePath);
+
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+            for(int i = 0; i < playlist.length; i++) {
+                fileWriter.write(playlist[i] + "\n");
+            }
+            fileWriter.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -56,5 +74,9 @@ public class App
 
     private static String getPlaylistSongCount(JFrame frame) {
         return JOptionPane.showInputDialog(frame, "Enter the song count of the playlist ID you gave in the previous window.", null, JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private static String getTextFileSaveFilePath(JFrame frame) {
+        return JOptionPane.showInputDialog(frame, "Enter the file path where you want the playlist text saved.", null, JOptionPane.PLAIN_MESSAGE);
     }
 }
